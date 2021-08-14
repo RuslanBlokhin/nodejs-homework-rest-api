@@ -1,5 +1,3 @@
-/* eslint-disable semi */
-/* eslint-disable quotes */
 const getAll = require("./getAll");
 const getById = require("./getById");
 const addContact = require("./addContact");

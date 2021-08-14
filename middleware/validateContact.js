@@ -1,5 +1,3 @@
-/* eslint-disable semi */
-/* eslint-disable quotes */
 const Joi = require("joi");
 
 const contactSchema = Joi.object({
