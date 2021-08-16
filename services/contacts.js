@@ -20,4 +20,10 @@ const removeContact = (contactID) => {
   return Contact.findByIdAndDelete(contactID);
 };
 
-module.exports = { addContact, getAll, getById, updateById, removeContact };
+module.exports = {
+  addContact,
+  getAll,
+  getById,
+  updateById,
+  removeContact,
+};

@@ -1,10 +1,10 @@
 const { NotFound } = require("http-errors");
 const { contacts: service } = require("../../services");
 
-const update = async (req, res, next) => {
+const updateStatusContact = async (req, res, next) => {
   const { contactId } = req.params;
-  const { body } = req.body;
-  const result = await service.updateById(contactId, body);
+  const { favorite = false } = req.body;
+  const result = await service.updateById(contactId, { favorite });
 
   if (!result) {
     throw new NotFound(`Contact with id=${contactId} not found`);
@@ -18,4 +18,4 @@ const update = async (req, res, next) => {
   });
 };
 
-module.exports = update;
+module.exports = updateStatusContact;
