@@ -6,41 +6,15 @@ require("dotenv").config();
 
 const { DB_HOST } = process.env;
 
-const { Schema, model } = mongoose;
-
-const contactSchema = Schema({
-  name: {
-    type: String,
-    required: [true, "Set name for contact"],
-  },
-  email: {
-    type: String,
-  },
-  phone: {
-    type: String,
-  },
-  favorite: {
-    type: Boolean,
-    default: false,
-  },
-});
-
-const Contact = model("contact", contactSchema);
-
 mongoose
   .connect(DB_HOST, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false,
   })
   .then(async () => {
-    const newContact = {
-      name: "Scott",
-      lastName: "Bekker",
-      email: "bekker@mail.ru",
-    };
     try {
-      const result = await Contact.create(newContact);
       console.log("Database connection successful");
     } catch (error) {
       console.log(error);
@@ -58,6 +32,23 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/contacts", contactsRouter);
+
+app.use((_, res) => {
+  res.status(404).json({
+    status: "error",
+    code: 404,
+    message: "Not found",
+  });
+});
+
+app.use((error, _, res, __) => {
+  const { code = 500, message = "Server error" } = error;
+  res.status(code).json({
+    status: "error",
+    code,
+    message,
+  });
+});
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
