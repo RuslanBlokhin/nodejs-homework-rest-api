@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { validation } = require("../../middleware");
+const { validation, authenicate } = require("../../middleware");
 const {
   joiSchema,
   schemaUpdateStatusContact,
@@ -10,11 +10,11 @@ const {
 const { ctrlWrapper } = require("../../helpers");
 const { contacts: ctrl } = require("../../controllers");
 
-router.get("/", ctrl.getAll);
+router.get("/", authenicate, ctrl.getAll);
 
 router.get("/:contactId", ctrlWrapper(ctrl.getById));
 
-router.post("/", validation(joiSchema), ctrl.addContact);
+router.post("/", authenicate, validation(joiSchema), ctrl.addContact);
 
 router.patch(
   "/:contactId/favorite",

@@ -1,7 +1,9 @@
 const { Contact } = require("../model");
 
-const getAll = () => {
-  return Contact.find({});
+const getAll = (pagination, filter) => {
+  const { page, limit } = pagination;
+  const skip = page * limit - limit;
+  return Contact.find(filter, "_id name", { skip, limit: +limit });
 };
 
 const getById = (contactID) => {
