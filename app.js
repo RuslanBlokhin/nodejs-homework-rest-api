@@ -1,7 +1,8 @@
-const express = require("express");
+const express = require("express"); // создание роутинга
 const logger = require("morgan");
-const cors = require("cors");
-const mongoose = require("mongoose");
+const cors = require("cors"); // кросдоменные запросы
+const mongoose = require("mongoose"); // для подключения к базе
+const path = require("path"); //чтобы прописать пути к папкам
 
 require("dotenv").config();
 
@@ -36,6 +37,9 @@ app.use(express.json());
 app.use("/api/contacts", contactsRouter);
 
 app.use("/api/users", usersRouter);
+
+const usersDir = path.join(process.cwd(), "/public/avatars"); //путь к постоянной папке для сохранения аватара
+app.use("/avatars", express.static(usersDir)); //раздаем статику из постоянной папки
 
 app.use((_, res) => {
   res.status(404).json({
