@@ -1,5 +1,6 @@
 const multer = require("multer");
 const path = require("path"); //чтобы прописать пути к папкам
+require("dotenv").config();
 
 const tempDir = path.join(process.cwd(), "temp"); //путь к временной папке для сохранения аватара
 
@@ -20,5 +21,6 @@ const storageSettings = multer.diskStorage({
 const uploadMiddleware = multer({
   storage: storageSettings,
 });
+console.log(uploadMiddleware);
 
 module.exports = uploadMiddleware;

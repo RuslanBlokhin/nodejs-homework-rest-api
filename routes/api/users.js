@@ -1,11 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  validation,
-  authenicate,
-  uploadMiddleware,
-} = require("../../middleware");
+const { validation, authenicate } = require("../../middleware");
+const { uploadMiddleware } = require("../../middleware");
 const { joiSchemaUser } = require("../../model/schemas/user");
 const { auth: ctrl } = require("../../controllers");
 
