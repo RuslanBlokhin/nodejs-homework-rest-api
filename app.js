@@ -1,7 +1,9 @@
-const express = require("express");
+const express = require("express"); // создание роутинга
 const logger = require("morgan");
-const cors = require("cors");
-const mongoose = require("mongoose");
+const cors = require("cors"); // кросдоменные запросы
+const mongoose = require("mongoose"); // для подключения к базе
+const path = require("path"); //чтобы прописать пути к папкам
+const nodemailer = require("nodemailer");
 
 require("dotenv").config();
 
@@ -37,6 +39,9 @@ app.use("/api/contacts", contactsRouter);
 
 app.use("/api/users", usersRouter);
 
+const usersDir = path.join(process.cwd(), "/public/avatars"); //путь к постоянной папке для сохранения аватара
+app.use("/avatars", express.static(usersDir)); //раздаем статику из постоянной папки
+
 app.use((_, res) => {
   res.status(404).json({
     status: "error",
@@ -53,5 +58,32 @@ app.use((error, _, res, __) => {
     message,
   });
 });
+
+//Отправка письма
+const { EMAIL_PASSWORD } = process.env;
+
+const nodemailerConfig = {
+  host: "smtp.meta.ua",
+  port: 465, //25, 465, 2255
+  secure: true,
+  auth: {
+    user: "bogdan.lyamzin.d@meta.ua",
+    pass: EMAIL_PASSWORD,
+  },
+};
+
+const transporter = nodemailer.createTransport(nodemailerConfig);
+
+const email = {
+  from: "goitnodejs@meta.ua",
+  to: "blokhin.rus@gmail.com",
+  subject: "Тестовое письмо",
+  text: "Привет. Мы тестируем отправку писем!",
+};
+
+transporter
+  .sendMail(email)
+  .then((info) => console.log(info))
+  .catch((error) => console.log(error));
 
 module.exports = app;

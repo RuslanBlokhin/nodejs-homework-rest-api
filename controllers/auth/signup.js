@@ -11,13 +11,16 @@ const signup = async (req, res, next) => {
         message: "alredy register",
       });
     }
-    const newUser = await service.add(req.body);
+
+    await service.add(req.body);
     res.status(201).json({
       status: "success",
       code: 201,
       message: "Success register",
     });
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = signup;
